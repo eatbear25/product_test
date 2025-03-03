@@ -33,7 +33,18 @@ if ($totalRows) {
   }
 
   // * 取得頁面資料
-  $sql = sprintf("SELECT * FROM `product` ORDER BY id DESC LIMIT %s, %s", ($page - 1) * $perPage, $perPage);
+  // $sql = sprintf("SELECT * FROM `product` ORDER BY id DESC LIMIT %s, %s", ($page - 1) * $perPage, $perPage);
+
+  $sql = sprintf(
+    "
+    SELECT product.*, category.name AS category_name
+    FROM product
+    INNER JOIN category ON product.category_id=category.id
+    ORDER BY product.id DESC 
+    LIMIT %s, %s",
+    ($page - 1) * $perPage,
+    $perPage
+  );
 
   try {
     $rows = $pdo->query($sql)->fetchAll();
@@ -53,22 +64,24 @@ try {
   echo '<h2>' . $ex->getCode() . '</h2>';
 }
 
-
 // echo json_encode([
 //   // "page" => $page,
 //   // "totalPages" => $totalPages,
 //   // "rows" => $rows
 //   "category_rows" => $category_rows
 // ], JSON_UNESCAPED_UNICODE);
+
 ?>
 
 
 <?php include __DIR__ . '/parts/html-head.php' ?>
+
 <style>
   .content-column {
     width: 250px;
   }
 </style>
+
 <?php include __DIR__ . '/parts/html-navbar.php' ?>
 
 <?php include __DIR__ . '/product-list-content.php' ?>

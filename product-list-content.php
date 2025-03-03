@@ -118,6 +118,7 @@
         <th scope="col">功能列表</th>
       </tr>
     </thead>
+
     <tbody>
       <?php foreach ($rows as $row): ?>
         <tr>
@@ -129,7 +130,7 @@
             ?>
             <?= $row['content']; ?>
           </td>
-          <td><?= $row['category_id'] ?></td>
+          <td><?= $row['category_name'] ?></td>
           <td><?= $row['stock'] ?></td>
           <td>$<?= number_format($row['price'], 2) ?>
           </td>
@@ -142,7 +143,7 @@
           <td><?= date("Y-m-d", strtotime($row['created_at'])) ?></td>
           <td><?= date("Y-m-d", strtotime($row['updated_at'])) ?></td>
           <td>
-            <a href="" class="btn btn-warning">編輯</a>
+            <a href="edit-product.php?id=<?= $row['id'] ?>" class="btn btn-warning">編輯</a>
             <a href="javascript: deleteOne(<?= $row['id'] ?>)" class="btn btn-danger">刪除</a>
           </td>
         </tr>
