@@ -65,9 +65,9 @@ try {
 
 <?php include __DIR__ . '/parts/html-head.php' ?>
 <style>
-.content-column {
-  width: 300px;
-}
+  .content-column {
+    width: 250px;
+  }
 </style>
 <?php include __DIR__ . '/parts/html-navbar.php' ?>
 
@@ -76,73 +76,80 @@ try {
 <?php include __DIR__ . '/parts/html-scripts.php' ?>
 
 <script>
-// 建立對應到 DOM 的 Modal 物件
-const addModal = new bootstrap.Modal('#addProductModal');
-const addResultModal = new bootstrap.Modal('#addResultModal');
+  // 建立對應到 DOM 的 Modal 物件
+  const addModal = new bootstrap.Modal('#addProductModal');
+  const addResultModal = new bootstrap.Modal('#addResultModal');
 
-// 取得欄位的參照
-// const nameField = document.addForm.name;
-// const emailField = document.addForm.email;
+  // 取得欄位的參照
+  // const nameField = document.addForm.name;
+  // const emailField = document.addForm.email;
 
-const sendData = e => {
-  e.preventDefault();
-  // 恢復欄位的外觀
-  // nameField.style.border = '1px solid #CCC';
-  // nameField.nextElementSibling.innerHTML = '';
-  // emailField.style.border = '1px solid #CCC';
-  // emailField.nextElementSibling.innerHTML = '';
+  const sendData = e => {
+    e.preventDefault();
+    // 恢復欄位的外觀
+    // nameField.style.border = '1px solid #CCC';
+    // nameField.nextElementSibling.innerHTML = '';
+    // emailField.style.border = '1px solid #CCC';
+    // emailField.nextElementSibling.innerHTML = '';
 
-  // TODO: 欄位的資料檢查
-  let isPass = true; // 有沒有通過檢查
+    // TODO: 欄位的資料檢查
+    let isPass = true; // 有沒有通過檢查
 
 
-  // if (nameField.value.length < 2) {
-  //   isPass = false;
-  //   nameField.style.border = '2px solid red';
-  //   nameField.nextElementSibling.innerHTML = '請填入正確的姓名';
-  // }
+    // if (nameField.value.length < 2) {
+    //   isPass = false;
+    //   nameField.style.border = '2px solid red';
+    //   nameField.nextElementSibling.innerHTML = '請填入正確的姓名';
+    // }
 
-  // if (!validateEmail(emailField.value)) {
-  //   isPass = false;
-  //   emailField.style.border = '2px solid red';
-  //   emailField.nextElementSibling.innerHTML = '請填入正確的電子郵件信箱';
-  // }
+    // if (!validateEmail(emailField.value)) {
+    //   isPass = false;
+    //   emailField.style.border = '2px solid red';
+    //   emailField.nextElementSibling.innerHTML = '請填入正確的電子郵件信箱';
+    // }
 
-  if (isPass) {
-    // 如果全部要檢查的欄位都通過檢查
-    const fd = new FormData(document.addProductForm);
+    if (isPass) {
+      // 如果全部要檢查的欄位都通過檢查
+      const fd = new FormData(document.addProductForm);
 
-    fetch('add-product-api.php', {
-        method: 'POST',
-        body: fd
-      })
-      .then(res => res.json())
-      .then(result => {
-        console.log(result);
-        if (result.success) {
-          addModal.hide(); // 隱藏 新增商品 Modal
-          addResultModal.show(); // 顯示 新增結果 Modal
-          return;
-        }
-        if (result.error) {
-          alert(result.error);
-        } else {
-          for (let k in result.errorFields) {
-            const el = document.querySelector(`#${k}`);
-            if (el) {
-              el.style.border = '2px solid red';
-              el.nextElementSibling.innerHTML = result.errorFields[k];
+      fetch('add-product-api.php', {
+          method: 'POST',
+          body: fd
+        })
+        .then(res => res.json())
+        .then(result => {
+          console.log(result);
+          if (result.success) {
+            addModal.hide(); // 隱藏 新增商品 Modal
+            addResultModal.show(); // 顯示 新增結果 Modal
+            return;
+          }
+          if (result.error) {
+            alert(result.error);
+          } else {
+            for (let k in result.errorFields) {
+              const el = document.querySelector(`#${k}`);
+              if (el) {
+                el.style.border = '2px solid red';
+                el.nextElementSibling.innerHTML = result.errorFields[k];
+              }
             }
           }
-        }
-      })
-      .catch(ex => {
-        console.warn('Fetch 出錯了!');
-        console.warn(ex);
-      })
+        })
+        .catch(ex => {
+          console.warn('Fetch 出錯了!');
+          console.warn(ex);
+        })
+    }
+
   }
 
-}
+  const deleteOne = (id) => {
+    // question: 1. 若要在詢問時呈現名字? 2. 點選後在詢問時整列要呈現明顯的底色
+    if (confirm(`確定要刪除編號為 ${id} 的資料嗎?`)) {
+      location.href = `del-product.php?id=${id}`;
+    }
+  }
 </script>
 
 <?php include __DIR__ . '/parts/html-tail.php' ?>

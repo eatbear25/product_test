@@ -6,17 +6,17 @@
       </li>
 
       <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-      <li class="page-item">
-        <a class="page-link <?= $page == $i ? 'active' : '' ?>" href='?page=<?= $i ?>'><?= $i ?>
-        </a>
-      </li>
+        <li class="page-item">
+          <a class="page-link <?= $page == $i ? 'active' : '' ?>" href='?page=<?= $i ?>'><?= $i ?>
+          </a>
+        </li>
       <?php endfor ?>
 
       <li class=" page-item">
         <a class="page-link" href="?page=<?= $page + 1 ?>">Next</a>
       </li>
 
-      <button type="button" class="btn btn-danger ms-auto" data-bs-toggle="modal" data-bs-target="#addProductModal">
+      <button type="button" class="btn btn-success ms-auto" data-bs-toggle="modal" data-bs-target="#addProductModal">
         + 新增商品
       </button>
 
@@ -50,7 +50,7 @@
                     <option selected disabled>請選擇</option>
 
                     <?php foreach ($category_rows as $row): ?>
-                    <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                      <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
                     <?php endforeach ?>
 
                   </select>
@@ -115,27 +115,37 @@
         <th scope="col">照片</th>
         <th scope="col">上架時間</th>
         <th scope="col">更新時間</th>
+        <th scope="col">功能列表</th>
       </tr>
     </thead>
     <tbody>
       <?php foreach ($rows as $row): ?>
-      <tr>
-        <td><?= $row['id'] ?></td>
-        <td><?= $row['name'] ?></td>
-        <td class="content-column"><?= $row['content'] ?></td>
-        <td><?= $row['category_id'] ?></td>
-        <td><?= $row['stock'] ?></td>
-        <td>$<?= number_format($row['price'], 2) ?>
-        </td>
-        <td>
-          <button type="button" class="btn <?= $row['status'] == 1 ? 'btn-outline-success' : 'btn-outline-danger' ?>">
-            <?= $row['status'] == 1 ? '上架' : '下架' ?>
-          </button>
-        </td>
-        <td><?= $row['image'] ?></td>
-        <td><?= date("Y-m-d", strtotime($row['created_at'])) ?></td>
-        <td><?= date("Y-m-d", strtotime($row['updated_at'])) ?></td>
-      </tr>
+        <tr>
+          <td><?= $row['id'] ?></td>
+          <td><?= $row['name'] ?></td>
+          <td class="content-column">
+            <!-- TODO: 確認怎麼顯示 -->
+            <?php // mb_strimwidth($row['content'], 0, 25, '...') 
+            ?>
+            <?= $row['content']; ?>
+          </td>
+          <td><?= $row['category_id'] ?></td>
+          <td><?= $row['stock'] ?></td>
+          <td>$<?= number_format($row['price'], 2) ?>
+          </td>
+          <td>
+            <button type="button" class="btn <?= $row['status'] == 1 ? 'btn-outline-success' : 'btn-outline-danger' ?>">
+              <?= $row['status'] == 1 ? '上架' : '下架' ?>
+            </button>
+          </td>
+          <td><?= $row['image'] ?></td>
+          <td><?= date("Y-m-d", strtotime($row['created_at'])) ?></td>
+          <td><?= date("Y-m-d", strtotime($row['updated_at'])) ?></td>
+          <td>
+            <a href="" class="btn btn-warning">編輯</a>
+            <a href="javascript: deleteOne(<?= $row['id'] ?>)" class="btn btn-danger">刪除</a>
+          </td>
+        </tr>
       <?php endforeach ?>
     </tbody>
   </table>
