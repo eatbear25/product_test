@@ -109,14 +109,15 @@ try {
               </select>
             </div>
 
-            <!-- <div class="form-floating mb-3">
-              <select class="form-select" id="floatingSelectGrid" aria-label="Floating label select example"
-                name="status">
-                <option value="1" selected>上架</option>
-                <option value="0">下架</option>
-              </select>
-              <label for="floatingSelectGrid">商品狀態</label>
-            </div> -->
+            <!-- 圖片區 -->
+            <div class="mb-3">
+              <label for="photo" class="form-label">商品照片</label>
+              <input class="form-control" type="file" name="photo" accept="image/png,image/jpeg" />
+              <div class="form-text"></div>
+              <br />
+              <img src="./images/<?= $row['image'] ?>" alt="" id="preview" width="300" />
+            </div>
+
 
 
             <button type="submit" class="btn btn-primary">修改</button>
@@ -174,6 +175,24 @@ try {
 
   const sendData = e => {
     e.preventDefault();
+    // * 上傳圖片預覽
+    const photo = document.addProductForm.photo;
+    const preview = document.querySelector("#preview");
+
+    // * 取得欄位的參照
+    const photoField = document.addProductForm.photo;
+
+    photo.addEventListener("change", (e) => {
+      photoField.style.border = '1px solid #CCC';
+      photoField.nextElementSibling.innerHTML = '';
+      if (photo.files.length) {
+        // 同步的方式載入檔案的內容預覽
+        preview.src = URL.createObjectURL(photo.files[0]);
+      } else {
+        preview.src = "";
+      }
+    });
+
     // 恢復欄位的外觀
     // nameField.style.border = '1px solid #CCC';
     // nameField.nextElementSibling.innerHTML = '';

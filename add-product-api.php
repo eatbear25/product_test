@@ -88,7 +88,7 @@ if (!$isPass) {
 
 // * 上傳至資料庫（確保資料一致性）
 try {
-  $pdo->beginTransaction(); // 開始交易
+  // $pdo->beginTransaction(); // 開始交易
 
   $sql = "INSERT INTO 
   `product` (`name`, `content`, `category_id`, `stock`, `price`, `status`, `image`) 
@@ -108,9 +108,9 @@ try {
   $output['success'] = !!$stmt->rowCount();
   $output['id'] = $pdo->lastInsertId(); // 取得新增的產品 ID
 
-  $pdo->commit(); // 交易提交
+  // $pdo->commit(); // 交易提交
 } catch (PDOException $ex) {
-  $pdo->rollBack(); // 交易回滾
+  // $pdo->rollBack(); // 交易回滾
   $output['error'] = '資料庫錯誤：' . $ex->getMessage();
 }
 

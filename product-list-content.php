@@ -21,8 +21,7 @@
       </button>
 
       <!-- 新增商品 Modal -->
-      <div class="modal fade" id="addProductModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="addProductModalLabel" aria-hidden="true">
+      <div class="modal fade" id="addProductModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
@@ -75,23 +74,22 @@
                   <label for="floatingSelectGrid">商品狀態</label>
                 </div>
 
-                <?php
-                //TODO: 解決圖片上傳 
-                ?>
-
                 <div class="mb-3">
                   <label for="photo" class="form-label">商品照片</label>
                   <input class="form-control" type="file" name="photo" accept="image/png,image/jpeg" />
                   <div class="form-text"></div>
                   <br />
-                  <img src="" alt="" id="preview" width="300" />
                 </div>
+
+                <img src="" alt="" id="preview" width="300" />
 
                 <!-- 結尾 -->
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                  <button type="submit" class="btn btn-danger">確認新增</button>
+                  <!-- <button type="submit" class="btn btn-danger">確認新增</button> -->
+                  <button class="btn btn-danger">確認新增</button>
                 </div>
+
               </form>
 
             </div>
@@ -117,7 +115,7 @@
         <th scope="col">照片</th>
         <th scope="col">上架時間</th>
         <th scope="col">更新時間</th>
-        <th scope="col">功能列表</th>
+        <th scope="col">操作</th>
       </tr>
     </thead>
 
@@ -141,12 +139,8 @@
               <?= $row['status'] == 1 ? '上架' : '下架' ?>
             </button>
           </td>
-          <?php
-          /*
-          <td><?= $row['image'] ?></td>
-          */ ?>
 
-          <td><img src="./images/<?= $row['image'] ?>" alt="" width="150"></td>
+          <td><img src="./images/<?= $row['image'] ?>" alt="" width="80"></td>
           <td><?= date("Y-m-d", strtotime($row['created_at'])) ?></td>
           <td><?= date("Y-m-d", strtotime($row['updated_at'])) ?></td>
           <td>

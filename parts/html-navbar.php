@@ -13,9 +13,6 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="product-list.php">商品管理</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="add-product.php">新增商品</a>
-          </li>
         </ul>
       </div>
     </div>

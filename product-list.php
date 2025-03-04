@@ -92,6 +92,9 @@ try {
   // * 建立對應到 DOM 的 Modal 物件
   const addModal = new bootstrap.Modal('#addProductModal');
   const addResultModal = new bootstrap.Modal('#addResultModal');
+  // const addModal = new bootstrap.Modal(document.getElementById('addProductModal'));
+  // const addResultModal = new bootstrap.Modal(document.getElementById('addResultModal'));
+
 
   // * 上傳圖片預覽
   const photo = document.addProductForm.photo;
@@ -105,6 +108,7 @@ try {
   photo.addEventListener("change", (e) => {
     photoField.style.border = '1px solid #CCC';
     photoField.nextElementSibling.innerHTML = '';
+
     if (photo.files.length) {
       // 同步的方式載入檔案的內容預覽
       preview.src = URL.createObjectURL(photo.files[0]);
@@ -113,8 +117,10 @@ try {
     }
   });
 
-  const sendData = e => {
+  const sendData = (e) => {
     e.preventDefault();
+    event.stopPropagation();
+
     // 恢復欄位的外觀
     // nameField.style.border = '1px solid #CCC';
     // nameField.nextElementSibling.innerHTML = '';
@@ -138,11 +144,11 @@ try {
     // }
 
     // 前端先檢查，避免沒選檔案就發送請求
-    if (!photo.files.length) {
-      isPass = false;
-      photoField.style.border = '2px solid red';
-      photoField.nextElementSibling.innerHTML = '請選擇一張圖片';
-    }
+    // if (!photo.files.length) {
+    //   isPass = false;
+    //   photoField.style.border = '2px solid red';
+    //   photoField.nextElementSibling.innerHTML = '請選擇一張圖片';
+    // }
 
 
     if (isPass) {
@@ -155,10 +161,14 @@ try {
         })
         .then(res => res.json())
         .then(result => {
-          console.log(result);
+          console.log("API 回應結果 (fetch 成功執行)", result); // ✅ 檢查 fetch 是否有回應
+
           if (result.success) {
+            console.log("我成功囉!!!!");
             addModal.hide(); // 隱藏 新增商品 Modal
             addResultModal.show(); // 顯示 新增結果 Modal
+            document.addProductForm.reset();
+
             return;
           }
           if (result.error) {
@@ -187,6 +197,17 @@ try {
       location.href = `del-product.php?id=${id}`;
     }
   }
+
+  // 監聽新增成功的 Modal 何時關閉
+  document.getElementById('addResultModal').addEventListener('hidden.bs.modal', function() {
+    location.reload(); // ✅ 自動刷新頁面，讓新商品出現
+  });
+
+  // 監聽新增表單，每次關閉時就清空表單內容
+  document.getElementById('addProductModal').addEventListener('hidden.bs.modal', function() {
+    document.addProductForm.reset(); // 清空表單
+    document.getElementById('preview').src = ''; // 清空圖片預覽
+  });
 </script>
 
 <?php include __DIR__ . '/parts/html-tail.php' ?>
