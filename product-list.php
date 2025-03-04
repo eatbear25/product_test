@@ -89,13 +89,29 @@ try {
 <?php include __DIR__ . '/parts/html-scripts.php' ?>
 
 <script>
-  // 建立對應到 DOM 的 Modal 物件
+  // * 建立對應到 DOM 的 Modal 物件
   const addModal = new bootstrap.Modal('#addProductModal');
   const addResultModal = new bootstrap.Modal('#addResultModal');
 
-  // 取得欄位的參照
+  // * 上傳圖片預覽
+  const photo = document.addProductForm.photo;
+  const preview = document.querySelector("#preview");
+
+  // * 取得欄位的參照
   // const nameField = document.addForm.name;
   // const emailField = document.addForm.email;
+  const photoField = document.addProductForm.photo;
+
+  photo.addEventListener("change", (e) => {
+    photoField.style.border = '1px solid #CCC';
+    photoField.nextElementSibling.innerHTML = '';
+    if (photo.files.length) {
+      // 同步的方式載入檔案的內容預覽
+      preview.src = URL.createObjectURL(photo.files[0]);
+    } else {
+      preview.src = "";
+    }
+  });
 
   const sendData = e => {
     e.preventDefault();
@@ -120,6 +136,14 @@ try {
     //   emailField.style.border = '2px solid red';
     //   emailField.nextElementSibling.innerHTML = '請填入正確的電子郵件信箱';
     // }
+
+    // 前端先檢查，避免沒選檔案就發送請求
+    if (!photo.files.length) {
+      isPass = false;
+      photoField.style.border = '2px solid red';
+      photoField.nextElementSibling.innerHTML = '請選擇一張圖片';
+    }
+
 
     if (isPass) {
       // 如果全部要檢查的欄位都通過檢查

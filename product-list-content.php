@@ -48,7 +48,6 @@
                   <select class="form-select" id="floatingSelectGrid" aria-label="Floating label select example"
                     name="category">
                     <option selected disabled>請選擇</option>
-
                     <?php foreach ($category_rows as $row): ?>
                       <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
                     <?php endforeach ?>
@@ -80,10 +79,13 @@
                 //TODO: 解決圖片上傳 
                 ?>
 
-                <!-- <div class="mb-3">
-                  <label for="formFile" class="form-label">商品照片</label>
-                  <input class="form-control" type="file" id="formFile" name="photo">
-                </div> -->
+                <div class="mb-3">
+                  <label for="photo" class="form-label">商品照片</label>
+                  <input class="form-control" type="file" name="photo" accept="image/png,image/jpeg" />
+                  <div class="form-text"></div>
+                  <br />
+                  <img src="" alt="" id="preview" width="300" />
+                </div>
 
                 <!-- 結尾 -->
                 <div class="modal-footer">
@@ -139,7 +141,12 @@
               <?= $row['status'] == 1 ? '上架' : '下架' ?>
             </button>
           </td>
+          <?php
+          /*
           <td><?= $row['image'] ?></td>
+          */ ?>
+
+          <td><img src="./images/<?= $row['image'] ?>" alt="" width="150"></td>
           <td><?= date("Y-m-d", strtotime($row['created_at'])) ?></td>
           <td><?= date("Y-m-d", strtotime($row['updated_at'])) ?></td>
           <td>

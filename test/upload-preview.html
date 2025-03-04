@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>上傳前的預覽</h1>
+
+    <form name="addProductForm" onsubmit="sendData(event)">
+      <input type="file" name="photo" accept="image/png,image/jpeg" />
+      <br />
+      <img src="" alt="" id="preview" width="300" />
+      <br />
+      <button>上傳</button>
+    </form>
+
+    <script>
+      const photo = document.addProductForm.photo;
+      const preview = document.querySelector("#preview");
+
+      photo.addEventListener("change", (e) => {
+        if (photo.files.length) {
+          // 同步的方式載入檔案的內容預覽
+          preview.src = URL.createObjectURL(photo.files[0]);
+        } else {
+          preview.src = "";
+        }
+      });
+
+      const sendData = (e) => {
+        e.preventDefault();
+
+        // 前端先檢查，避免沒選檔案就發送請求
+        if (!photo.files.length) {
+          alert("請選擇一張圖片再上傳！");
+          return;
+        }
+
+        const fd = new FormData(document.addProductForm);
+
+        fetch("./../upload-avatar.php", {
+          method: "POST",
+          body: fd,
+        })
+          .then((r) => r.json())
+          .then((obj) => {
+            console.log(obj);
+            if (obj.success && obj.file) {
+              preview.src = `../images/${obj.file}`;
+            }
+          });
+      };
+    </script>
+  </body>
+</html>
