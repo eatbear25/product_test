@@ -29,12 +29,17 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <!-- 表單內容 -->
+            <!-- 表單內容(浮動標籤 + bootstrap 驗證) -->
+            <?php
+            /* 
             <div class="modal-body">
-              <form name="addProductForm" novalidate onsubmit="sendData(event)">
+              <form class="needs-validation" name="addProductForm" novalidate onsubmit="sendData(event)">
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" id="floatingInput" placeholder="請輸入產品名稱" name="name">
-                  <label for="floatingInput">產品名稱</label>
+                  <input type="text" class="form-control" id="floatingInput" placeholder="請輸入產品名稱" name="name" required>
+                  <label for="floatingInput">產品名稱*</label>
+                  <div class="invalid-feedback">
+                    請輸入至少兩個字
+                  </div>
                 </div>
 
                 <div class="form-floating mb-3">
@@ -45,29 +50,37 @@
 
                 <div class="form-floating mb-3">
                   <select class="form-select" id="floatingSelectGrid" aria-label="Floating label select example"
-                    name="category">
-                    <option selected disabled>請選擇</option>
+                    name="category" required>
+                    <option selected disabled value="">請選擇</option>
                     <?php foreach ($category_rows as $row): ?>
                       <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
                     <?php endforeach ?>
-
                   </select>
-                  <label for="floatingSelectGrid">產品分類</label>
+                  <label for="floatingSelectGrid">產品分類*</label>
+                  <div class="invalid-feedback">
+                    請選擇一個分類
+                  </div>
                 </div>
 
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="請輸入庫存數量" name="stock" min=0>
-                  <label for="floatingInput">庫存數量</label>
+                  <input type="number" class="form-control" id="floatingInput" placeholder="請輸入庫存數量" name="stock" min=0 required>
+                  <label for="floatingInput">庫存數量*</label>
+                  <div class="invalid-feedback">
+                    請輸入正整數
+                  </div>
                 </div>
 
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="請輸入商品價格" name="price" min=0>
-                  <label for="floatingInput">商品價格</label>
+                  <input type="number" class="form-control" id="floatingInput" placeholder="請輸入商品價格" name="price" min=1 required>
+                  <label for="floatingInput">商品價格*</label>
+                  <div class="invalid-feedback">
+                    請輸入正整數
+                  </div>
                 </div>
 
                 <div class="form-floating mb-3">
                   <select class="form-select" id="floatingSelectGrid" aria-label="Floating label select example"
-                    name="status">
+                    name="status" required>
                     <option value="1" selected>上架</option>
                     <option value="0">下架</option>
                   </select>
@@ -75,9 +88,8 @@
                 </div>
 
                 <div class="mb-3">
-                  <label for="photo" class="form-label">商品照片</label>
+                  <label for="photo" class="form-label">商品照片*</label>
                   <input class="form-control" type="file" name="photo" accept="image/png,image/jpeg" />
-                  <div class="form-text"></div>
                   <br />
                 </div>
 
@@ -93,6 +105,149 @@
               </form>
 
             </div>
+            */
+            ?>
+
+            <!-- 表單內容(測試區1 改掉浮動標籤) -->
+            <?php
+            /*
+            <div class="modal-body">
+              <form class="needs-validation" name="addProductForm" novalidate onsubmit="sendData(event)">
+                <div class="mb-3">
+                  <label class="form-label" for="name">產品名稱*</label>
+                  <input type="text" class="form-control" id="name" placeholder="請輸入產品名稱" name="name" required>
+                  <div class="invalid-feedback">
+                    請輸入至少兩個字
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="content">介紹</label>
+                  <textarea class="form-control" placeholder="請輸入產品介紹" id="content" style="height: 100px"
+                    name="content"></textarea>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="category">產品分類*</label>
+                  <select class="form-select" id="category" aria-label="Floating label select example"
+                    name="category" required>
+                    <option selected disabled value="">請選擇</option>
+                    <?php foreach ($category_rows as $row): ?>
+                      <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                    <?php endforeach ?>
+                  </select>
+                  <div class="invalid-feedback">
+                    請選擇一個分類
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="stock">庫存數量*</label>
+                  <input type="number" class="form-control" id="stock" placeholder="請輸入庫存數量" name="stock" min=0 required>
+                  <div class="invalid-feedback">
+                    請輸入正整數
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="price">商品價格*</label>
+                  <input type="number" class="form-control" id="price" placeholder="請輸入商品價格" name="price" min=1 required>
+                  <div class="invalid-feedback">
+                    請輸入正整數
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="status">商品狀態</label>
+                  <select class="form-select" id="status" aria-label="Floating label select example"
+                    name="status" required>
+                    <option value="1" selected>上架</option>
+                    <option value="0">下架</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="photo" class="form-label">商品照片*</label>
+                  <input class="form-control" type="file" name="photo" accept="image/png,image/jpeg" />
+                  <br />
+                </div>
+
+                <img src="" alt="" id="preview" width="300" />
+
+                <!-- 結尾 -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                  <!-- <button type="submit" class="btn btn-danger">確認新增</button> -->
+                  <button class="btn btn-danger">確認新增</button>
+                </div>
+
+              </form>
+
+            </div>
+            */
+            ?>
+
+            <!-- 表單內容(測試區2 改掉bootstrap驗證) -->
+            <div class="modal-body">
+              <form name="addProductForm" novalidate onsubmit="sendData(event)">
+                <div class="mb-3">
+                  <label class="form-label" for="name">產品名稱*</label>
+                  <input type="text" class="form-control" id="name" placeholder="請輸入產品名稱" name="name" required>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="content">介紹</label>
+                  <textarea class="form-control" placeholder="請輸入產品介紹" id="content" style="height: 100px"
+                    name="content"></textarea>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="category">產品分類*</label>
+                  <select class="form-select" id="category" aria-label="Floating label select example"
+                    name="category" required>
+                    <option selected disabled value="">請選擇</option>
+                    <?php foreach ($category_rows as $row): ?>
+                      <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                    <?php endforeach ?>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="stock">庫存數量*</label>
+                  <input type="number" class="form-control" id="stock" placeholder="請輸入庫存數量" name="stock" min=0 required>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="price">商品價格*</label>
+                  <input type="number" class="form-control" id="price" placeholder="請輸入商品價格" name="price" min=1 required>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="status">商品狀態</label>
+                  <select class="form-select" id="status" aria-label="Floating label select example"
+                    name="status" required>
+                    <option value="1" selected>上架</option>
+                    <option value="0">下架</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="photo" class="form-label">商品照片*</label>
+                  <input class="form-control" type="file" name="photo" accept="image/png,image/jpeg" />
+                  <br />
+                </div>
+
+                <img src="" alt="" id="preview" width="300" />
+
+                <!-- 結尾 -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                  <button class="btn btn-danger">確認新增</button>
+                </div>
+              </form>
+            </div>
+
+
           </div>
         </div>
       </div>

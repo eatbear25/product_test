@@ -116,9 +116,10 @@ try {
               <div class="form-text"></div>
               <br />
               <img src="./images/<?= $row['image'] ?>" alt="" id="preview" width="300" />
+
+              <!-- 傳送圖片檔名去API -->
+              <input type="hidden" name="original_photo" value="<?php echo htmlspecialchars($row['image']); ?>">
             </div>
-
-
 
             <button type="submit" class="btn btn-primary">修改</button>
           </form>
@@ -163,6 +164,25 @@ try {
   const nameField = document.editProductForm.name;
   const emailField = document.editProductForm.email;
 
+  // * 上傳圖片預覽
+  const photo = document.editProductForm.photo;
+  const preview = document.querySelector("#preview");
+
+  // * 取得欄位的參照
+  const photoField = document.editProductForm.photo;
+
+  photo.addEventListener("change", (e) => {
+    // photoField.style.border = '1px solid #CCC';
+    // photoField.nextElementSibling.innerHTML = '';
+
+    if (photo.files.length) {
+      // 同步的方式載入檔案的內容預覽
+      preview.src = URL.createObjectURL(photo.files[0]);
+    } else {
+      preview.src = "";
+    }
+  });
+
   const myBack = () => {
     console.log('document.referer:', document.referrer);
 
@@ -175,23 +195,6 @@ try {
 
   const sendData = e => {
     e.preventDefault();
-    // * 上傳圖片預覽
-    const photo = document.addProductForm.photo;
-    const preview = document.querySelector("#preview");
-
-    // * 取得欄位的參照
-    const photoField = document.addProductForm.photo;
-
-    photo.addEventListener("change", (e) => {
-      photoField.style.border = '1px solid #CCC';
-      photoField.nextElementSibling.innerHTML = '';
-      if (photo.files.length) {
-        // 同步的方式載入檔案的內容預覽
-        preview.src = URL.createObjectURL(photo.files[0]);
-      } else {
-        preview.src = "";
-      }
-    });
 
     // 恢復欄位的外觀
     // nameField.style.border = '1px solid #CCC';

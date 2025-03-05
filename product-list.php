@@ -130,7 +130,7 @@ try {
     // TODO: 欄位的資料檢查
     let isPass = true; // 有沒有通過檢查
 
-
+    // * 新增表單的前台驗證
     // if (nameField.value.length < 2) {
     //   isPass = false;
     //   nameField.style.border = '2px solid red';
@@ -164,24 +164,24 @@ try {
           console.log("API 回應結果 (fetch 成功執行)", result); // ✅ 檢查 fetch 是否有回應
 
           if (result.success) {
-            console.log("我成功囉!!!!");
+            console.log("新增成功!!!!");
             addModal.hide(); // 隱藏 新增商品 Modal
             addResultModal.show(); // 顯示 新增結果 Modal
             document.addProductForm.reset();
 
             return;
           }
-          if (result.error) {
-            alert(result.error);
-          } else {
-            for (let k in result.errorFields) {
-              const el = document.querySelector(`#${k}`);
-              if (el) {
-                el.style.border = '2px solid red';
-                el.nextElementSibling.innerHTML = result.errorFields[k];
-              }
-            }
-          }
+          // if (result.error) {
+          //   alert(result.error);
+          // } else {
+          //   for (let k in result.errorFields) {
+          //     const el = document.querySelector(`#${k}`);
+          //     if (el) {
+          //       el.style.border = '2px solid red';
+          //       el.nextElementSibling.innerHTML = result.errorFields[k];
+          //     }
+          //   }
+          // }
         })
         .catch(ex => {
           console.warn('Fetch 出錯了!');
@@ -198,16 +198,37 @@ try {
     }
   }
 
-  // 監聽新增成功的 Modal 何時關閉
+  // * 監聽新增成功的 Modal 何時關閉
   document.getElementById('addResultModal').addEventListener('hidden.bs.modal', function() {
     location.reload(); // ✅ 自動刷新頁面，讓新商品出現
   });
 
-  // 監聽新增表單，每次關閉時就清空表單內容
+  // * 監聽新增表單，每次關閉時就清空表單內容
   document.getElementById('addProductModal').addEventListener('hidden.bs.modal', function() {
     document.addProductForm.reset(); // 清空表單
     document.getElementById('preview').src = ''; // 清空圖片預覽
   });
+
+  // * 表單驗證區
+  // (function() {
+  //   'use strict'
+
+  //   // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  //   var forms = document.querySelectorAll('.needs-validation')
+
+  //   // Loop over them and prevent submission
+  //   Array.prototype.slice.call(forms)
+  //     .forEach(function(form) {
+  //       form.addEventListener('submit', function(event) {
+  //         if (!form.checkValidity()) {
+  //           event.preventDefault()
+  //           event.stopPropagation()
+  //         }
+
+  //         form.classList.add('was-validated')
+  //       }, false)
+  //     })
+  // })()
 </script>
 
 <?php include __DIR__ . '/parts/html-tail.php' ?>

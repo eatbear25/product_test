@@ -8,15 +8,52 @@ $output = [
   'success' => false,
   'postData' => $_POST,
   'error' => '',
+  'file' => '', # 儲存的檔名
   'errorFields' => []
 ];
 
+// * 上傳圖片
+$dir = __DIR__ . '/images/';
+
+# 允許的圖片類型
+$extMap = [
+  'image/jpeg' => '.jpg',
+  'image/png' => '.png',
+  'image/webp' => '.webp',
+];
 
 
 # 欄位的資料檢查
 $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 $name = trim($_POST['name'] ?? '');
-$status = isset($_POST['status']) ? (int)$_POST['status'] : 0;
+$stock = intval($_POST['stock']);
+$category = intval($_POST['category']);
+$price = intval($_POST['price']);
+$status = isset($_POST['status']) ? (int)$_POST['status'] : 1;
+$photo = '';
+
+// * 圖片欄位驗證
+$image_name = null; // 預設圖片欄位為 null
+if (!empty($_FILES['photo']['name'])) {
+  if (!is_string($_FILES['photo']['name']) || $_FILES['photo']['error'] != 0) {
+    $isPass = false;
+    $output['errorFields']['photo'] = '圖片上傳失敗';
+  } elseif (empty($extMap[$_FILES['photo']['type']])) {
+    $isPass = false;
+    $output['errorFields']['photo'] = '不支援的圖片格式';
+  } else {
+    // * 產生唯一檔名
+    $ext = $extMap[$_FILES['photo']['type']];
+    $image_name = md5($_FILES['photo']['name'] . uniqid()) . $ext;
+    $output['file'] = $image_name; // 存入 JSON 回應
+
+    // * 搬運圖片到指定資料夾
+    if (!move_uploaded_file($_FILES['photo']['tmp_name'], $dir . $image_name)) {
+      $isPass = false;
+      $output['errorFields']['photo'] = '圖片儲存失敗';
+    }
+  }
+}
 
 $isPass = true;
 
@@ -50,18 +87,20 @@ $sql = "UPDATE `product` SET
     `category_id`=?,
     `stock`=?,
     `price`=?,
-    `status`=?
+    `status`=?,
+    `image`=?
     WHERE `id`=? ";
 
 try {
   $stmt = $pdo->prepare($sql);
   $stmt->execute([
-    $_POST['name'],
+    $name,
     $_POST['content'],
-    $_POST['category'],
-    $_POST['stock'],
-    $_POST['price'],
+    $category,
+    $stock,
+    $price,
     $status,
+    $image_name ?: $_POST['original_photo'],  // 如果沒有新圖片，保留原來的圖片
     $id
   ]);
 
